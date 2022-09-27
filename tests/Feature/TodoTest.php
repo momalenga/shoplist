@@ -31,8 +31,8 @@ class TodoTest extends TestCase
 
         // Got to the right Livewire component
         Livewire::test(TodoComponent::class)
-            ->set('item', 'Ice cream')
-            ->set('done', false)
+            ->set('todo.item', 'Ice cream')
+            ->set('todo.done', false)
             ->call('saveTodo');
 
         // submit item and checked.

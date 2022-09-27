@@ -9,9 +9,14 @@ class TodoComponent extends Component
 {
     public $todo;
 
-    public $item;
-
-    public $done = false;
+    protected function rules()
+    {
+        return [
+            'todo.item' => ['required', 'min:3'],
+            'todo.user_id' => ['required'],
+            'todo.done' => ['required'],
+        ];
+    }
 
     public function mount()
     {
@@ -28,6 +33,17 @@ class TodoComponent extends Component
         $this->todo = $todo;
     }
 
+    public function toggleTodo(Todo $todo)
+    {
+        // $this->editTodo($todo);
+        // dump($this->todo->done);
+        $this->todo = $todo;
+        $this->todo->done = ! $todo->done;
+        // dd($this->todo->done);
+        $this->todo->save();
+        $this->makeBlankTodo();
+    }
+
     public function render()
     {
         $todos = Todo::get();
@@ -37,14 +53,11 @@ class TodoComponent extends Component
 
     public function saveTodo()
     {
-        // $this->validate();
-        $todo = Todo::create(
-            [
-                'user_id' => auth()->id(),
-                'item' => $this->item,
-                'done' => $this->done,
-            ]
-        );
-        $this->item = '';
+        $this->todo->user_id = auth()->id();
+        $this->todo->done = false;
+
+        $this->validate();
+        $this->todo->save();
+        $this->makeBlankTodo();
     }
 }
