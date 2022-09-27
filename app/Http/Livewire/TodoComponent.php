@@ -13,6 +13,21 @@ class TodoComponent extends Component
 
     public $done = false;
 
+    public function mount()
+    {
+        $this->makeBlankTodo();
+    }
+
+    public function makeBlankTodo()
+    {
+        $this->todo = Todo::make();
+    }
+
+    public function editTodo(Todo $todo)
+    {
+        $this->todo = $todo;
+    }
+
     public function render()
     {
         $todos = Todo::get();
